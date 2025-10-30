@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../model/User.js";
-import bcrypt from "bcrypt";
+
 //Gernerate JWT token 
  const  generateToken = (id)=>{
     return jwt.sign({ id}, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -57,11 +57,7 @@ console.log(req.body);
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+
 
     // Successful login
     res.status(200).json({
