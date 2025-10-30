@@ -1,5 +1,5 @@
 import Expense from "../model/Expense.js";
-import XLSX from "xlsx";
+import * as XLSX from "xlsx";
 
 
 
@@ -86,12 +86,15 @@ export const downloadExpenseExcel = async (req, res) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 
-    // ✅ Write to /tmp folder
-   
-    XLSX.writeFile(workbook, "expense_details.xlsx");
+    // ✅ Create Excel file in memory (buffer)
+    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
-    // ✅ Send file as download
-    res.download( "expense_details.xlsx");
+    // ✅ Set headers for download
+    res.setHeader("Content-Disposition", "attachment; filename=expense_details.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+    // ✅ Send buffer as file
+    res.send(buffer);
   } catch (error) {
     console.error("Error generating Excel:", error);
     res.status(500).json({ message: "Error generating Excel file" });

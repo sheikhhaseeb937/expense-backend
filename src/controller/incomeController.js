@@ -1,5 +1,5 @@
 import Income from "../model/Income.js";
-import XLSX from "xlsx";
+import * as XLSX from "xlsx";
 
 
 export const addIncome = async (req, res) => {
@@ -67,38 +67,39 @@ export const deleteIncome = async(req,res)=>{
 }
 
 export const downloadIncomeExcel = async (req, res) => {
-        const userId = req.user.id;
-        console.log(req.user.id);
-
   try {
+    const userId = req.user.id;
 
- 
-    const incomes = await Income.find({ userId }).sort({date: -1})
+    const incomes = await Income.find({ userId }).sort({ date: -1 });
 
     if (incomes.length === 0) {
       return res.status(404).json({ message: "No income records found" });
     }
 
-    // 2️⃣ Convert to JSON for Excel
     const data = incomes.map((item) => ({
       Source: item.source,
       Amount: item.amount,
-   Date:item.date,
+      Date: new Date(item.date).toLocaleDateString(),
     }));
 
-    // 3️⃣ Create a new workbook and sheet
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Incomes");
 
+    // ✅ Create Excel buffer instead of writing file
+    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
-    // 5️⃣ Write file
-    XLSX.writeFile(workbook, "income_details.xlsx");
+    // ✅ Set headers for browser download
+    res.setHeader("Content-Disposition", "attachment; filename=income_details.xlsx");
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
 
-    // 6️⃣ Send file as download
-  res.download('income_details.xlsx')
+    // ✅ Send.buffer as response
+    res.send(buffer);
   } catch (error) {
-    console.error(error);
+    console.error("Error generating income Excel:", error);
     res.status(500).json({ message: "Error generating Excel file" });
   }
 };
