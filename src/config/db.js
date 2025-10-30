@@ -7,8 +7,8 @@ const mongDB = async () => {
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error("❌ MongoDB connection error:", error.message);
-    console.error("🧩 Check your .env file and internet connection.");
+    console.error(" MongoDB connection error:", error.message);
+    console.error("Check your .env file and internet connection.");
     process.exit(1);
   }
 };

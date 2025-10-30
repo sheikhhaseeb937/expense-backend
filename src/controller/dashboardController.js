@@ -61,7 +61,7 @@ export const getDashboardData = async (req, res) => {
         ...txn.toObject(),
         type: "expense",
       })),
-    ].sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort latest first
+    ].sort((a, b) => new Date(b.date) - new Date(a.date)); 
 
     // Final Response
     res.json({
@@ -77,7 +77,7 @@ export const getDashboardData = async (req, res) => {
         total: incomeLast60Days,
         transactions: last60DaysIncomeTransactions,
       },
-      recentTransactions: lastTransactions.slice(0, 10), // Limit to 10 recent transactions
+      recentTransactions: lastTransactions.slice(0, 10),
     });
   } catch (error) {
     console.error("Dashboard error:", error);

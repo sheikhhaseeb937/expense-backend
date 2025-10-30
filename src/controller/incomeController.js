@@ -25,7 +25,7 @@ export const addIncome = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Income added successfully",
-      income: newIncome, // ✅ fixed
+      income: newIncome, 
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -86,17 +86,17 @@ export const downloadIncomeExcel = async (req, res) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Incomes");
 
-    // ✅ Create Excel buffer instead of writing file
+    // Create Excel buffer instead of writing file
     const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
-    // ✅ Set headers for browser download
+    //  Set headers for browser download
     res.setHeader("Content-Disposition", "attachment; filename=income_details.xlsx");
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     );
 
-    // ✅ Send.buffer as response
+
     res.send(buffer);
   } catch (error) {
     console.error("Error generating income Excel:", error);

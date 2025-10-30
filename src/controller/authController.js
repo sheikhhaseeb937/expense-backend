@@ -17,7 +17,6 @@ console.log(req.body);
       return res.status(400).json({ message: "Email already registered" });
     }
 
-    // Create new user (password will be hashed automatically by schema)
     const user = await User.create({
       fullName,
       email,
@@ -77,7 +76,7 @@ console.log(req.body);
   //User INfo user 
  export const getUserInfo = async(req ,res)=>{
   try {
-    // req.user.id should come from your JWT middleware
+ 
     const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {

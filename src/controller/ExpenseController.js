@@ -26,7 +26,7 @@ export const addExpense = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Income added successfully",
-      expense: newExpense, // ✅ fixed
+      expense: newExpense, 
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -86,14 +86,14 @@ export const downloadExpenseExcel = async (req, res) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 
-    // ✅ Create Excel file in memory (buffer)
+
     const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
-    // ✅ Set headers for download
+ 
     res.setHeader("Content-Disposition", "attachment; filename=expense_details.xlsx");
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-    // ✅ Send buffer as file
+ 
     res.send(buffer);
   } catch (error) {
     console.error("Error generating Excel:", error);

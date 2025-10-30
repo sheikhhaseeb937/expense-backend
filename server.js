@@ -15,7 +15,7 @@ mongDB();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
