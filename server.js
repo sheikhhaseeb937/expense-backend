@@ -1,5 +1,5 @@
 import express from "express";
-
+import app from "./app.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongDB from "./src/config/db.js";
