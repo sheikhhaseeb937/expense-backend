@@ -21,7 +21,7 @@ console.log(req.body);
     const user = await User.create({
       fullName,
       email,
-      password:hashedPassword,
+      password,
       profileImageUrl,
     });
 
