@@ -16,11 +16,12 @@ console.log(req.body);
     if (existingUser) {
       return res.status(400).json({ message: "Email already registered" });
     }
+     
 
     const user = await User.create({
       fullName,
       email,
-      password,
+      password:hashedPassword,
       profileImageUrl,
     });
 
@@ -45,15 +46,15 @@ console.log(req.body);
   try {
     const { email, password } = req.body;
 
-    // Check if both fields are provided
     if (!email || !password) {
       return res.status(400).json({ message: "Please provide email and password" });
     }
 
-    // Check if user exists
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    // // Check if user exists
+
+ const user = await User.findOne({ email }).select("+password");
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
 

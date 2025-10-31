@@ -25,7 +25,7 @@ export const addExpense = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Income added successfully",
+      message: "Expense added successfully",
       expense: newExpense, 
     });
   } catch (error) {
